@@ -1,0 +1,289 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 12,18 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -128,
+        -16
+      ],
+      "id": "308ee7d6-6338-4d36-b200-00ac280a923a",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "17tdrj9UE9TFSN9L6oN2U7fU0GGgvo-Xbs1TsnxG5Yhw",
+          "mode": "list",
+          "cachedResultName": "برنامه محتوایی",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17tdrj9UE9TFSN9L6oN2U7fU0GGgvo-Xbs1TsnxG5Yhw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17tdrj9UE9TFSN9L6oN2U7fU0GGgvo-Xbs1TsnxG5Yhw/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "وضعیت"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        96,
+        -16
+      ],
+      "id": "fd2ea308-6892-4dc0-9163-47f5b3a04247",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "NvTTaX5kCwdSwkIs",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "تو «اوربیت» (ORBIT) هستی؛ یک سیستم برنامه‌ریزی و مشاور تحصیلی هوشمند. لحن تو صمیمی، انگیزه‌بخش، مدرن و بدون کلیشه‌های خسته‌کننده است. تو به دانش‌آموزان کمک می‌کنی هوشمندانه‌تر درس بخوانند."
+            },
+            {
+              "content": "=لطفاً یک پست جذاب و کاربردی برای کانال تلگرام بر اساس اطلاعات زیر بنویس:\n\nموضوع پست: {{ $json[\"موضوع\"] }}\nهدف و راهنمای نگارش: {{ $json['پرامپت دقیق برای هوش مصنوعی (OpenAI)'] }}\n\nقوانین:\n- از ایموجی‌های مناسب استفاده کن.\n- متن را برای خواندن در تلگرام پاراگراف‌بندی کن (کوتاه و خوانا).\n- در پایان یک سوال کوتاه برای درگیر کردن مخاطب (Call to action) بپرس.\n- حتماً در انتهای پست آیدی کانال (@Orbit_academy20) را قرار بده.\n- در پایان متن، با یک لحن صمیمی و جذاب به مخاطب بگو: «برای ثبت‌نام و دریافت یک هفته برنامه‌ریزی رایگان، به آیدی موجود در بایو کانال پیام بدید.»\n"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        320,
+        -16
+      ],
+      "id": "a578fdc0-2f41-4b1c-b1f5-7d95f4b09211",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "YIbWuK9bhgmtsQSn",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendRichMessage",
+        "chatId": "@Orbit_academy20",
+        "richFormat": "markdown",
+        "richMessageText": "={{ $json.output[0].content[0].text }}",
+        "additionalFields": {
+          "is_rtl": true
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        688,
+        -16
+      ],
+      "id": "08894a40-453a-432f-807e-f02707880219",
+      "name": "Send a rich message",
+      "webhookId": "e958bb1c-b763-4f80-8c39-f4372af0f74b",
+      "credentials": {
+        "telegramApi": {
+          "id": "JNo0rhWWwO7qkVNW",
+          "name": "orbit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "17tdrj9UE9TFSN9L6oN2U7fU0GGgvo-Xbs1TsnxG5Yhw",
+          "mode": "list",
+          "cachedResultName": "برنامه محتوایی",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17tdrj9UE9TFSN9L6oN2U7fU0GGgvo-Xbs1TsnxG5Yhw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17tdrj9UE9TFSN9L6oN2U7fU0GGgvo-Xbs1TsnxG5Yhw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "وضعیت": "Done",
+            "row_number": "={{ $('Get row(s) in sheet').item.json.row_number }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "روز",
+              "displayName": "روز",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "نوبت پست",
+              "displayName": "نوبت پست",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "موضوع",
+              "displayName": "موضوع",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "پرامپت دقیق برای هوش مصنوعی (OpenAI)",
+              "displayName": "پرامپت دقیق برای هوش مصنوعی (OpenAI)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "وضعیت",
+              "displayName": "وضعیت",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        896,
+        -16
+      ],
+      "id": "7b12caf7-f3a8-4395-84a6-9a743e61f293",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "NvTTaX5kCwdSwkIs",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Send a rich message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a rich message": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "eae14351ce07807f120e61fd68c7e1783165b6f2666374ceb339209d246af6ba"
+  }
+}
